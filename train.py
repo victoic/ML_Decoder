@@ -16,6 +16,10 @@ from torch.cuda.amp import GradScaler, autocast
 
 parser = argparse.ArgumentParser(description='PyTorch MS_COCO Training')
 parser.add_argument('--data', type=str, default='/home/MSCOCO_2014/')
+parser.add_argument('--train-imgs', type=str, default='/home/MSCOCO_2014/')
+parser.add_argument('--test-imgs', type=str, default='/home/MSCOCO_2014/')
+parser.add_argument('--train-anns-file', default='annotations/instances_train2014.json')
+parser.add_argument('--test-anns-file', default='annotations/instances_val2014.json')
 parser.add_argument('--lr', default=1e-4, type=float)
 parser.add_argument('--model-name', default='tresnet_l')
 parser.add_argument('--model-path', default='https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/ML_Decoder/tresnet_l_pretrain_ml_decoder.pth', type=str)
@@ -42,12 +46,12 @@ def main():
     print('done')
 
     # COCO Data loading
-    instances_path_val = os.path.join(args.data, 'annotations/instances_val2014.json')
-    instances_path_train = os.path.join(args.data, 'annotations/instances_train2014.json')
+    instances_path_val = os.path.join(args.data, args.test_anns_file)
+    instances_path_train = os.path.join(args.data, args.train_anns_file)
     # data_path_val = args.data
     # data_path_train = args.data
-    data_path_val = f'{args.data}/val2014'  # args.data
-    data_path_train = f'{args.data}/train2014'  # args.data
+    data_path_val = os.path.join(args.data, args.test_imgs)  # args.data
+    data_path_train = os.path.join(args.data, args.train_imgs)  # args.data
     val_dataset = CocoDetection(data_path_val,
                                 instances_path_val,
                                 transforms.Compose([
