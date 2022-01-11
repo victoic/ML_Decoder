@@ -102,6 +102,7 @@ class CocoDetection(datasets.coco.CocoDetection):
         self.transform = transform
         self.target_transform = target_transform
         self.cat2cat = dict()
+        self.num_classes = len(self.coco.cats.keys())
         for cat in self.coco.cats.keys():
             self.cat2cat[cat] = len(self.cat2cat)
         # print(self.cat2cat)
@@ -112,7 +113,7 @@ class CocoDetection(datasets.coco.CocoDetection):
         ann_ids = coco.getAnnIds(imgIds=img_id)
         target = coco.loadAnns(ann_ids)
 
-        output = torch.zeros((3, 80), dtype=torch.long)
+        output = torch.zeros((3, self.num_classes), dtype=torch.long)
         for obj in target:
             if obj['area'] < 32 * 32:
                 output[0][self.cat2cat[obj['category_id']]] = 1
