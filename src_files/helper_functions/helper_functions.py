@@ -116,6 +116,7 @@ class CocoDetection(datasets.coco.CocoDetection):
         target = coco.loadAnns(ann_ids)
 
         output = torch.zeros((3, self.num_classes), dtype=torch.long)
+        print(output.shape)
         for obj in target:
             if obj['area'] < 32 * 32:
                 output[0][self.cat2cat[obj['category_id']]] = 1
