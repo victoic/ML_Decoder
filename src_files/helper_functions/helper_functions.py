@@ -106,6 +106,8 @@ class CocoDetection(datasets.coco.CocoDetection):
         for cat in self.coco.cats.keys():
             self.cat2cat[cat] = len(self.cat2cat)
         # print(self.cat2cat)
+        print(self.coco.cats)
+        print(self.num_classes)
 
     def __getitem__(self, index):
         coco = self.coco
