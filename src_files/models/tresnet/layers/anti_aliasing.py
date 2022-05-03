@@ -37,6 +37,7 @@ class DownsampleJIT(object):
         if input.dtype != self.filt.dtype:
             self.filt = self.filt.float() 
         input_pad = F.pad(input, (1, 1, 1, 1), 'reflect')
+        print(input_pad.dtype, self.filt.dtype)
         return F.conv2d(input_pad.cpu(), self.filt.cpu(), stride=2, padding=0, groups=input.shape[1])
 
 
