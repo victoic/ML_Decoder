@@ -35,10 +35,10 @@ class DownsampleJIT(object):
 
     def __call__(self, input: torch.Tensor):
         if input.dtype != self.filt.dtype:
+            self.filt.to(input.device)
             self.filt = self.filt.float() 
         input_pad = F.pad(input, (1, 1, 1, 1), 'reflect')
-        print(input_pad.dtype, self.filt.dtype)
-        return F.conv2d(input_pad.cpu(), self.filt.cpu(), stride=2, padding=0, groups=input.shape[1])
+        return F.conv2d(input_pad, self.filt, stride=2, padding=0, groups=input.shape[1])
 
 
 class Downsample(nn.Module):
